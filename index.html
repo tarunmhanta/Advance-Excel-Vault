@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Excel Vault</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+<body>
+
+    <!-- =========================
+         LOGIN / REGISTER
+    ========================== -->
+
+    <main
+        id="authSection"
+        class="auth-section"
+    >
+
+        <div class="auth-card">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    E
+                </div>
+
+                <div>
+                    <h1>Excel Vault</h1>
+
+                    <p>
+                        Simple Excel file management
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- LOGIN -->
+
+            <section
+                id="loginView"
+                class="auth-view"
+            >
+
+                <div class="auth-heading">
+
+                    <h2>
+                        Welcome back
+                    </h2>
+
+                    <p>
+                        Login using your phone number
+                        and password.
+                    </p>
+
+                </div>
+
+
+                <form id="loginForm">
+
+                    <div class="form-group">
+
+                        <label for="loginPhone">
+                            Phone Number
+                        </label>
+
+                        <input
+                            id="loginPhone"
+                            type="tel"
+                            placeholder="Enter phone number"
+                            autocomplete="tel"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="loginPassword">
+                            Password
+                        </label>
+
+                        <input
+                            id="loginPassword"
+                            type="password"
+                            placeholder="Enter password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                        id="loginButton"
+                    >
+                        Login
+                    </button>
+
+                </form>
+
+
+                <div class="auth-switch">
+
+                    <span>
+                        Don't have an account?
+                    </span>
+
+                    <button
+                        type="button"
+                        id="showRegisterButton"
+                        class="link-button"
+                    >
+                        Create account
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- REGISTER -->
+
+            <section
+                id="registerView"
+                class="auth-view hidden"
+            >
+
+                <div class="auth-heading">
+
+                    <h2>
+                        Create account
+                    </h2>
+
+                    <p>
+                        Create your Excel Vault account.
+                    </p>
+
+                </div>
+
+
+                <form id="registerForm">
+
+                    <div class="form-group">
+
+                        <label for="registerName">
+                            Full Name
+                        </label>
+
+                        <input
+                            id="registerName"
+                            type="text"
+                            placeholder="Enter your name"
+                            autocomplete="name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="registerPhone">
+                            Phone Number
+                        </label>
+
+                        <input
+                            id="registerPhone"
+                            type="tel"
+                            placeholder="Enter phone number"
+                            autocomplete="tel"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="registerEmail">
+                            Email Address
+                        </label>
+
+                        <input
+                            id="registerEmail"
+                            type="email"
+                            placeholder="Enter email address"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="registerPassword">
+                            Password
+                        </label>
+
+                        <input
+                            id="registerPassword"
+                            type="password"
+                            placeholder="Create password"
+                            minlength="8"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="registerConfirmPassword">
+                            Confirm Password
+                        </label>
+
+                        <input
+                            id="registerConfirmPassword"
+                            type="password"
+                            placeholder="Confirm password"
+                            minlength="8"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                        id="registerButton"
+                    >
+                        Create Account
+                    </button>
+
+                </form>
+
+
+                <div class="auth-switch">
+
+                    <span>
+                        Already have an account?
+                    </span>
+
+                    <button
+                        type="button"
+                        id="showLoginButton"
+                        class="link-button"
+                    >
+                        Login
+                    </button>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================
+         DASHBOARD
+    ========================== -->
+
+    <main
+        id="dashboardSection"
+        class="dashboard-section hidden"
+    >
+
+        <header class="topbar">
+
+            <div class="topbar-brand">
+
+                <div class="brand-icon small">
+                    E
+                </div>
+
+                <div>
+
+                    <h1>
+                        Excel Vault
+                    </h1>
+
+                    <span id="userGreeting">
+                        Welcome
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="logoutButton"
+                class="logout-button"
+            >
+                Logout
+            </button>
+
+        </header>
+
+
+        <section class="dashboard-container">
+
+            <!-- DASHBOARD HOME -->
+
+            <div
+                id="dashboardHome"
+                class="dashboard-home"
+            >
+
+                <div class="dashboard-heading">
+
+                    <h2>
+                        Dashboard
+                    </h2>
+
+                    <p>
+                        Manage your Excel files.
+                    </p>
+
+                </div>
+
+
+                <div class="dashboard-options">
+
+                    <button
+                        type="button"
+                        class="dashboard-card"
+                        data-section="upload"
+                    >
+
+                        <div class="dashboard-card-icon">
+                            ↑
+                        </div>
+
+                        <div class="dashboard-card-content">
+
+                            <h3>
+                                Upload
+                            </h3>
+
+                            <p>
+                                Upload an Excel file.
+                            </p>
+
+                        </div>
+
+                        <span class="card-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="dashboard-card"
+                        data-section="download"
+                    >
+
+                        <div class="dashboard-card-icon">
+                            ↓
+                        </div>
+
+                        <div class="dashboard-card-content">
+
+                            <h3>
+                                Download
+                            </h3>
+
+                            <p>
+                                View your uploaded files.
+                            </p>
+
+                        </div>
+
+                        <span class="card-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 UPLOAD
+            ========================== -->
+
+            <section
+                id="uploadPanel"
+                class="content-panel hidden"
+            >
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h2>
+                            Upload File
+                        </h2>
+
+                        <p>
+                            Select an Excel file to upload.
+                        </p>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="back-button"
+                        data-action="dashboard"
+                    >
+                        ← Back
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="uploadArea"
+                    class="upload-area"
+                >
+
+                    <div class="upload-icon">
+                        ↑
+                    </div>
+
+                    <h3>
+                        Select an Excel file
+                    </h3>
+
+                    <p>
+                        Supported formats:
+                        XLSX, XLS and CSV
+                    </p>
+
+
+                    <label
+                        for="excelFile"
+                        class="file-button"
+                    >
+                        Choose File
+                    </label>
+
+
+                    <input
+                        id="excelFile"
+                        type="file"
+                        accept=".xlsx,.xls,.csv"
+                        hidden
+                    >
+
+
+                    <p
+                        id="selectedFileName"
+                        class="selected-file"
+                    >
+                        No file selected
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="uploadButton"
+                    class="primary-button upload-button"
+                    disabled
+                >
+                    Upload File
+                </button>
+
+
+                <div
+                    id="uploadMessage"
+                    class="message hidden"
+                ></div>
+
+            </section>
+
+
+            <!-- =========================
+                 DOWNLOAD
+            ========================== -->
+
+            <section
+                id="downloadPanel"
+                class="content-panel hidden"
+            >
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h2>
+                            Download Files
+                        </h2>
+
+                        <p>
+                            Your files organized by date.
+                        </p>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="back-button"
+                        data-action="dashboard"
+                    >
+                        ← Back
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="downloadList"
+                    class="download-list"
+                >
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            📁
+                        </div>
+
+                        <h3>
+                            No files available
+                        </h3>
+
+                        <p>
+                            Your uploaded files will
+                            appear here.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+
+<script src="config.js"></script>
+<script src="api.js"></script>
+<script src="app.js"></script>
+
+</body>
+
+</html>
