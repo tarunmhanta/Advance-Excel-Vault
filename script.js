@@ -218,7 +218,8 @@ function resetUpload() {
   setMsg("upload-msg", "");
 }
 
-function pickFiles(files) {
+function pickFiles(fileList) {
+  const files = Array.from(fileList);
   resetUpload();
   for (const file of files) {
     const item = el("li", "picked-item");
