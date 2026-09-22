@@ -431,6 +431,19 @@ h1 {
   .files li .btn { grid-column: 2; grid-row: 1 / span 2; }
   .file-size { grid-column: 1; grid-row: 2; }
 }
+.credit {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.credit a {
+  color: var(--green-deep);
+  font-weight: 600;
+}
 
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
