@@ -193,7 +193,22 @@ function wireAuthForm(form, action, busyLabel, collect) {
 
 function phoneProblem(phone) {
   const digits = phone.replace(/\D/g, "");
-  return digits.length >= 7 && digits.length <= 15 ? "" : "Enter a valid phone number, including the country code if you have one.";
+  if (digits.length < 10 || digits.length > 15) {
+    return "Enter a valid phone number, including the country code if you have one.";
+  }
+  if (/^(\d)\1+$/.test(digits)) return "Enter a real phone number.";
+  const ascending = digits.split("").every((d, i, arr) => i === 0 || Number(d) === (Number(arr[i - 1]) + 1) % 10);
+  const descending = digits.split("").every((d, i, arr) => i === 0 || Number(d) === (Number(arr[i - 1]) + 9) % 10);
+  if (ascending || descending) return "Enter a real phone number.";
+  return "";
+}
+
+function emailProblem(email) {
+  const re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
+  if (!email || email.length > 120 || !re.test(email)) return "Enter a valid email address.";
+  const local = email.slice(0, email.lastIndexOf("@"));
+  if (local.startsWith(".") || local.endsWith(".") || local.includes("..")) return "Enter a valid email address.";
+  return "";
 }
 
 wireAuthForm($("login-form"), "login", "Logging in…", () => {
@@ -203,10 +218,11 @@ wireAuthForm($("login-form"), "login", "Logging in…", () => {
 
 wireAuthForm($("register-form"), "register", "Creating account…", () => {
   const phone = $("reg-phone").value;
+  const email = $("reg-email").value;
   const password = $("reg-password").value;
-  let problem = phoneProblem(phone);
+  let problem = phoneProblem(phone) || emailProblem(email);
   if (!problem && password.length < 8) problem = "Use a password with at least 8 characters.";
-  return { name: $("reg-name").value, phone, email: $("reg-email").value, password, problem };
+  return { name: $("reg-name").value, phone, email, password, problem };
 });
 
 /* ---------- Upload ---------- */
