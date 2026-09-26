@@ -73,12 +73,17 @@ function setupTabs(pairs, onChange) {
 }
 
 /* ---------- Session ---------- */
+//
+// sessionStorage (not localStorage) is used on purpose: it's cleared
+// automatically when this tab or the browser closes, which is what gives
+// us "auto logout on tab/browser close or PC shutdown" for free, with no
+// extra events or server calls needed.
 
 let session = null;
 
 function loadSession() {
   try {
-    const saved = JSON.parse(localStorage.getItem(SESSION_KEY));
+    const saved = JSON.parse(sessionStorage.getItem(SESSION_KEY));
     // token looks like userId.expiryMs.signature
     if (saved && saved.token && Number(saved.token.split(".")[1]) > Date.now()) return saved;
   } catch (_) { /* storage unavailable or corrupted */ }
@@ -87,12 +92,12 @@ function loadSession() {
 
 function saveSession(data) {
   session = data;
-  try { localStorage.setItem(SESSION_KEY, JSON.stringify(data)); } catch (_) { /* ignore */ }
+  try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(data)); } catch (_) { /* ignore */ }
 }
 
 function clearSession() {
   session = null;
-  try { localStorage.removeItem(SESSION_KEY); } catch (_) { /* ignore */ }
+  try { sessionStorage.removeItem(SESSION_KEY); } catch (_) { /* ignore */ }
 }
 
 /* ---------- API (Google Apps Script) ---------- */
@@ -219,6 +224,9 @@ function resetUpload() {
 }
 
 function pickFiles(fileList) {
+  // fileList is often a *live* FileList tied to the <input>. resetUpload()
+  // below clears that input, which would empty a live list mid-loop — so
+  // copy the files out to a plain array first.
   const files = Array.from(fileList);
   resetUpload();
   for (const file of files) {
@@ -337,11 +345,20 @@ function renderFiles(files) {
     const ul = el("ul", "files");
     for (const f of group) {
       const li = el("li");
-      const button = el("button", "btn quiet small", "Download");
-      button.type = "button";
-      button.setAttribute("aria-label", `Download ${f.name}`);
-      button.addEventListener("click", () => downloadFile(f, button));
-      li.append(el("span", "file-name", f.name), el("span", "file-size", formatSize(f.size)), button);
+      const actions = el("div", "file-actions");
+
+      const dlButton = el("button", "btn quiet small", "Download");
+      dlButton.type = "button";
+      dlButton.setAttribute("aria-label", `Download ${f.name}`);
+      dlButton.addEventListener("click", () => downloadFile(f, dlButton));
+
+      const delButton = el("button", "btn quiet small danger", "Delete");
+      delButton.type = "button";
+      delButton.setAttribute("aria-label", `Delete ${f.name}`);
+      delButton.addEventListener("click", () => deleteFileClient(f, delButton, li, day, head));
+
+      actions.append(dlButton, delButton);
+      li.append(el("span", "file-name", f.name), el("span", "file-size", formatSize(f.size)), actions);
       ul.append(li);
     }
 
@@ -370,6 +387,28 @@ async function downloadFile(file, button) {
       link.click();
       link.remove();
       setTimeout(() => URL.revokeObjectURL(url), 10000);
+    } catch (err) {
+      setMsg("download-msg", err.message, "error");
+    }
+  });
+}
+
+async function deleteFileClient(file, button, row, daySection, dayHead) {
+  if (!window.confirm(`Delete "${file.name}"? This can't be undone.`)) return;
+
+  setMsg("download-msg", "");
+  await withBusy(button, "Deleting…", async () => {
+    try {
+      await api("delete", { date: file.date, name: file.name });
+      row.remove();
+
+      const remaining = daySection.querySelectorAll("li").length;
+      if (remaining === 0) {
+        daySection.remove();
+        if (!$("file-list").querySelector(".day")) renderFiles([]); // show the empty state again
+      } else {
+        dayHead.querySelector("small").textContent = `${remaining} ${remaining === 1 ? "file" : "files"}`;
+      }
     } catch (err) {
       setMsg("download-msg", err.message, "error");
     }
